@@ -4,9 +4,9 @@ timeout(5) {
             checkout scm
         }
         stage("Deploy changes to jenkins") {
-            dir("jenkins") {
+            dir("jobs") {
                 //Не заработает если на агент не накатывали бинарь jenkins-jobs
-                sh "jenkins-jobs --conf ./jobs/jobs.ini update ./jobs"
+                sh "jenkins-jobs --conf ./jobs.ini update ./jobs"
             }
         }
     }

@@ -4,8 +4,8 @@
     name: git-runner
     scm:
     - git:
-        url: git@github.com:Niallith2/otus-jenkins.git
-        credentials-id: jenkins
+        url: git@github.com:Niallith2/otus_jenkins.git
+        credentials-id: github
         branches:
         - FETCH_HEAD
         refspec: $BRANCH
