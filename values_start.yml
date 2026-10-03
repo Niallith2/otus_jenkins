@@ -1,0 +1,14 @@
+controller:
+  serviceType: LoadBalancer
+  servicePort: 8080
+  jenkinsUrl: "http://localhost:8080"
+  additionalPlugins:
+    - pipeline-stage-view:2.41
+    - pipeline-utility-steps:3.810.va_7672d206740
+    - matrix-project:928.v1effc3f3a_236
+    - allure-jenkins-plugin:2.35.2
+    - junit:1431.vc0d98912a_756
+    - copyartifact:805.v9d1393350780
+    - http_request:1.659.v1b_9d9e942a_e6
+    - build-user-vars-plugin:214.va_eed2ed849ca_
+    - timestamper:1.30

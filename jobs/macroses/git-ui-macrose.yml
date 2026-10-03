@@ -1,0 +1,11 @@
+---
+    
+- scm:
+    name: git-runner
+    scm:
+    - git:
+        url: git@github.com:Niallith2/otus-jenkins.git
+        credentials-id: jenkins
+        branches:
+        - FETCH_HEAD
+        refspec: $BRANCH

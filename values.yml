@@ -1,0 +1,336 @@
+controller:
+  serviceType: LoadBalancer
+  servicePort: 8080
+  jenkinsUrl: "http://localhost:8080"
+  additionalPlugins:
+    - pipeline-stage-view:2.41
+    - pipeline-utility-steps:3.810.va_7672d206740
+    - matrix-project:928.v1effc3f3a_236
+    - allure-jenkins-plugin:2.35.2
+    - junit:1431.vc0d98912a_756
+    - copyartifact:805.v9d1393350780
+    - http_request:1.659.v1b_9d9e942a_e6
+    - build-user-vars-plugin:214.va_eed2ed849ca_
+    - timestamper:1.30
+  containerEnv:
+    - name: CASC_MERGE_STRATEGY
+      valuse: "override"
+  JCasC:
+    enable: true
+    defaultConfig: true
+    configScripts:
+      allure: |
+        configuration-as-code:
+          deprecated: "reject"
+          restricted: "reject"
+          unknown: "reject"
+          version: "1"
+        credentials:
+          folder: {
+            }
+          providerImpl: {
+            }
+          system:
+            domainCredentials:
+            - credentials:
+              - basicSSHUserPrivateKey:
+                  id: "github"
+                  privateKeySource:
+                    directEntry:
+                      privateKey: ""
+                  scope: GLOBAL
+                  username: "azamat-murzin"
+                  usernameSecret: true
+              domain: {
+                }
+          user: {
+            }
+        jenkins:
+          authorizationStrategy:
+            loggedInUsersCanDoAnything:
+              allowAnonymousRead: false
+          clouds:
+          - kubernetes:
+              containerCap: 10
+              containerCapStr: "10"
+              jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
+              jenkinsUrl: "http://jenkins.jenkins.svc.cluster.local:8080"
+              name: "otus"
+              namespace: "jenkins"
+              podLabels:
+              - key: "jenkins/jenkins-jenkins-agent"
+                value: "true"
+              serverUrl: "https://kubernetes.default"
+              templates:
+              - containers:
+                - args: "^${computer.jnlpmac} ^${computer.name}"
+                  envVars:
+                  - envVar:
+                      key: "JENKINS_URL"
+                      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+                  image: "jenkins/inbound-agent:3385.vf1123fb_515da_-1"
+                  name: "jnlp"
+                  resourceLimitCpu: "512m"
+                  resourceLimitMemory: "512Mi"
+                  resourceRequestCpu: "512m"
+                  resourceRequestMemory: "512Mi"
+                  workingDir: "/home/jenkins/agent"
+                id: "95d21559f6381190c43a9aa24e40c4b09348e5a043c03a5d3e59615d2435de79"
+                label: "jenkins-jenkins-agent"
+                name: "default"
+                namespace: "jenkins"
+                nodeUsageMode: NORMAL
+                podRetention: "never"
+                serviceAccount: "default"
+                slaveConnectTimeout: 100
+                slaveConnectTimeoutStr: "100"
+                yamlMergeStrategy: "override"
+              - containers:
+                - args: "^${computer.jnlpmac} ^${computer.name}"
+                  envVars:
+                  - envVar:
+                      key: "JENKINS_URL"
+                      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+                  - envVar:
+                      key: "ALLURE_OPTS"
+                      value: "--config-file=allurerc.yml"
+                  image: "localhost:5000/inbound-agent-allure3:3.15.0"
+                  livenessProbe:
+                    failureThreshold: 0
+                    initialDelaySeconds: 0
+                    periodSeconds: 0
+                    successThreshold: 0
+                    timeoutSeconds: 0
+                  name: "jnlp"
+                  workingDir: "/home/jenkins/agent"
+                id: "ada2141d-dc10-4283-be61-b05cb90d5c2d"
+                label: "jenkins-jenkins-agent"
+                name: "allure3"
+                namespace: "jenkins"
+                slaveConnectTimeout: 100
+                slaveConnectTimeoutStr: "100"
+                yamlMergeStrategy: "override"
+              - containers:
+                - args: "9999999"
+                  command: "sleep"
+                  image: "gcr.io/kaniko-project/executor:v1.24.0-debug"
+                  livenessProbe:
+                    failureThreshold: 0
+                    initialDelaySeconds: 0
+                    periodSeconds: 0
+                    successThreshold: 0
+                    timeoutSeconds: 0
+                  name: "kaniko"
+                  workingDir: "/home/jenkins/agent"
+                id: "c7199c6e-bebd-46d5-8190-2c7e35a22f32"
+                inheritFrom: "default"
+                label: "jenkins-jenkins-agent"
+                name: "kaniko"
+                namespace: "jenkins"
+                yamlMergeStrategy: "override"
+          crumbIssuer: "standard"
+          disableRememberMe: false
+          labelAtoms:
+          - name: "built-in"
+          - name: "jenkins-jenkins-agent"
+          log: {
+            }
+          markupFormatter: "plainText"
+          mode: NORMAL
+          nodeMonitors:
+          - "architecture"
+          - "clock"
+          - diskSpace:
+              freeSpaceThreshold: "1GiB"
+              freeSpaceWarningThreshold: "2GiB"
+          - "swapSpace"
+          - tmpSpace:
+              freeSpaceThreshold: "1GiB"
+              freeSpaceWarningThreshold: "2GiB"
+          - "responseTime"
+          numExecutors: 0
+          primaryView:
+            all:
+              name: "all"
+          projectNamingStrategy: "standard"
+          quietPeriod: 5
+          remotingSecurity:
+            enabled: true
+          scmCheckoutRetryCount: 0
+          securityRealm:
+            local:
+              allowsSignup: false
+              enableCaptcha: false
+              users:
+              - id: "admin"
+                name: "Jenkins Admin"
+                password: "admin"
+                properties:
+                - "apiToken"
+                - "consoleUrlProvider"
+                - "mailer"
+                - preferredProvider:
+                    providerId: "default"
+                - "experimentalFlags"
+                - "viewsTabBar"
+                - myView:
+                    primaryViewName: "all"
+                    viewsTabBar: "standard"
+                - timezone:
+                    timeZoneName: "Europe/Moscow"
+          slaveAgentPort: 50000
+          updateCenter:
+            sites:
+            - id: "default"
+              url: "https://updates.jenkins.io/update-center.json"
+          views:
+          - all:
+              name: "all"
+          viewsTabBar: "standard"
+        globalCredentialsConfiguration:
+          configuration:
+            providerFilter: "none"
+            typeFilter: "none"
+        appearance:
+          consoleUrlProvider: {
+            }
+          prism:
+            theme: PRISM
+        security:
+          apiToken:
+            creationOfLegacyTokenEnabled: false
+            tokenGenerationOnCreationEnabled: false
+            usageStatisticsEnabled: true
+          apiTokenProperty: {
+            }
+          contentSecurityPolicy:
+            enforce: false
+          copyartifact:
+            mode: PRODUCTION
+          cps:
+            hideSandbox: false
+          crumb: {
+            }
+          gitHooks:
+            allowedOnAgents: false
+            allowedOnController: false
+          gitHostKeyVerificationConfiguration:
+            sshHostKeyVerificationStrategy:
+              manuallyProvidedKeyVerificationStrategy:
+                approvedHostKeys: |-
+                  github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+                  github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+                  github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+          prism:
+            protectSourceCodeByPermission: false
+          queueItemAuthenticator: {
+            }
+          scriptApproval:
+            forceSandbox: false
+          updateSiteWarningsConfiguration: {
+            }
+        unclassified:
+          administrativeMonitorsConfiguration: {
+            }
+          allure: {
+            }
+          artifactManager: {
+            }
+          buildDiscarders:
+            configuredBuildDiscarders:
+            - "jobBuildDiscarder"
+          buildUser: {
+            }
+          buildUserVars:
+            allBuilds: true
+          casCGlobalConfig: {
+            }
+          computerRetentionCheckInterval: {
+            }
+          defaultDisplayUrlProvider: {
+            }
+          defaultFolderConfiguration: {
+            }
+          defaultView: {
+            }
+          envVarsFilter: {
+            }
+          fingerprints:
+            fingerprintCleanupDisabled: false
+            storage: "file"
+          globalDefaultFlowDurabilityLevel: {
+            }
+          globalLibraries: {
+            }
+          globalUntrustedLibraries: {
+            }
+          httpRequestGlobalConfig: {
+            }
+          junitTestResultStorage:
+            storage: "file"
+          location:
+            adminAddress: "адрес еще не настроен <nobody@nowhere>"
+            url: "http://localhost:8080/"
+          mailer:
+            charset: "UTF-8"
+            useSsl: false
+            useTls: false
+          metricsAccessKey: {
+            }
+          myView: {
+            }
+          nodeProperties: {
+            }
+          plugin: {
+            }
+          pollSCM:
+            pollingThreadCount: 10
+          projectNamingStrategy: {
+            }
+          proxyConfigurationManager: {
+            }
+          quietPeriod: {
+            }
+          resourceRoot: {
+            }
+          scmGit:
+            addGitTagAction: false
+            allowSecondFetch: false
+            createAccountBasedOnEmail: false
+            disableGitToolChooser: false
+            hideCredentials: false
+            showEntireCommitSummaryInChanges: false
+            useExistingAccountWithSameEmail: false
+          scmRetryCount: {
+            }
+          shell: {
+            }
+          timestamper:
+            allPipelines: true
+            elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+            systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+          upstream:
+            globalUpstreamFilterStrategy: UseOldest
+          usageStatistics: {
+            }
+          viewsTabBar: {
+            }
+        tool:
+          allure:
+            installations:
+            - name: "Allure 2"
+              properties:
+              - installSource:
+                  installers:
+                  - allureCommandlineInstaller:
+                      id: "2.43.0"
+          allure3:
+            installations:
+            - name: "Allure 3"
+          git:
+            installations:
+            - home: "git"
+              name: "Default"
+          mavenGlobalConfig:
+            globalSettingsProvider: "standard"
+            settingsProvider: "standard"
