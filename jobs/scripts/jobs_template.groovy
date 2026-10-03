@@ -6,6 +6,7 @@ timeout(5) {
         stage("Deploy changes to jenkins") {
             dir("jobs") {
                 //Не заработает если на агент не накатывали бинарь jenkins-jobs
+                sh "sudo apt install jenkins-job-builder"
                 sh "jenkins-jobs --conf ./jobs.ini update ./jobs"
             }
         }
