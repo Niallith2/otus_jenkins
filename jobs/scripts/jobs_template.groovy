@@ -25,8 +25,7 @@ spec:
         stage('Deploy changes to jenkins') {
             steps {
                 container('python') {
-                    dir('jobs') {
-                        sh '''
+                    sh '''
                             pip install --user "setuptools<82.0.0"
                             pip install --user jenkins-job-builder
                             ls ~/.local/bin/jenkins-jobs
@@ -34,7 +33,6 @@ spec:
                             ls $WORKSPACE
                             ~/.local/bin/jenkins-jobs --conf $WORKSPACE/jobs.ini update .
                         '''
-                    }
                 }
             }
         }
