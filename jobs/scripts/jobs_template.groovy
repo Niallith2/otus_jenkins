@@ -31,7 +31,7 @@ spec:
                             ls ~/.local/bin/jenkins-jobs
                             ls
                             ls $WORKSPACE
-                            ~/.local/bin/jenkins-jobs --conf $WORKSPACE/jobs.ini update .
+                            ~/.local/bin/jenkins-jobs --conf $WORKSPACE/jobs.ini update $WORKSPACE/jobs
                         '''
                 }
             }
