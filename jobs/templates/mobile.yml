@@ -28,4 +28,4 @@
     pipeline-scm:
       scm:
         - git-runner
-      script-path: jenkins/mobile.groovy
+      script-path: mobile.groovy

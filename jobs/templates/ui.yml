@@ -28,7 +28,7 @@
     pipeline-scm:
       scm:
         - git-runner
-      script-path: jenkins/ui.groovy
+      script-path: ui.groovy
             
         
     
