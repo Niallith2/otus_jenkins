@@ -1,5 +1,5 @@
 timeout(5) {
-    node("maven-slave") {
+    node("jenkins-jenkins-agent") {
         stage("Checkout") {
             checkout scm
         }
