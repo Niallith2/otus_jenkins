@@ -10,4 +10,4 @@
     pipeline-scm:
       scm:
         - git-runner
-      script-path: jenkins/jobs/scripts/jobs_template.groovy
+      script-path: jobs/scripts/jobs_template.groovy
