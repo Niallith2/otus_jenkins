@@ -3,7 +3,4 @@
     name: 'OTUS autotests'
     job-description: 'autotests for OTUS'
     jobs:
-      - 'api'
-      - 'mobile'
-      - 'ui'
       - 'jobs_uploader'

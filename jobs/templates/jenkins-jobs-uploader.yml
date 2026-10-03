@@ -1,6 +1,6 @@
 - job-template:
     name: jobs_uploader
-    description: Jobs uploader to Jenkins
+    description: Скачивание джоб из гит
     project-type: pipeline
     parameters:
       - string:
