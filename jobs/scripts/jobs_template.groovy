@@ -16,9 +16,11 @@ spec:
 '''
         }
     }
+
     triggers {
         pollSCM('H/5 * * * *')  // проверка каждые 5 минут (можно настроить)
     }
+
     stages {
         stage('Checkout') {
             steps {
