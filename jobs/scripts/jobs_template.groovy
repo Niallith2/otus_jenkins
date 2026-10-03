@@ -33,9 +33,6 @@ spec:
                     sh '''
                             pip install --user "setuptools<82.0.0"
                             pip install --user jenkins-job-builder
-                            ls ~/.local/bin/jenkins-jobs
-                            ls
-                            ls $WORKSPACE
                             ~/.local/bin/jenkins-jobs --conf $WORKSPACE/jobs.ini update $WORKSPACE/jobs
                         '''
                 }
