@@ -18,7 +18,7 @@
             PARALLEL: 4
       - string:
           name: BRANCH
-          default: hw-7
+          default: master
           description: Api tests
     pipeline-scm:
       scm:

@@ -23,7 +23,7 @@
             APP_PATH: /home/ubuntu/mobile_tests/src/main/java/resources/Andy.apk
       - string:
           name: BRANCH
-          default: hw-7
+          default: master
           description: Mobile tests
     pipeline-scm:
       scm:
