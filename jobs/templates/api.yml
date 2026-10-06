@@ -11,6 +11,10 @@
           name: URL
           default: https://fakerestapi.azurewebsites.net
           description: API Url
+      - bool:
+          name: FORCE
+          default: false
+          description: Принудительно пересобрать образ, игнорируя кэш
     pipeline-scm:
       scm:
         - api
