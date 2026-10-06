@@ -7,6 +7,10 @@
           name: BRANCH
           default: master
           description: Branch
+      - string:
+          name: URL
+          default: https://fakerestapi.azurewebsites.net
+          description: API Url
     pipeline-scm:
       scm:
         - api

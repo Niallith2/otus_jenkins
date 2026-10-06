@@ -11,3 +11,20 @@
       - status
       - build-button
       - job
+
+- view:
+    name: QA
+    view-type: list
+    description: QA
+    filter-executors: true
+    filter-queue: true
+    job-name:
+      - 'api'
+    columns:
+      - status
+      - weather
+      - job
+      - last-success
+      - last-failure
+      - last-duration
+      - build-button
