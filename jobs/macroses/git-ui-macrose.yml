@@ -9,3 +9,13 @@
         branches:
         - FETCH_HEAD
         refspec: $BRANCH
+
+- scm:
+    name: api
+    scm:
+    - git:
+        url: git@github.com:Niallith2/otus_hw3.git
+        credentials-id: github
+        branches:
+        - FETCH_HEAD
+        refspec: $BRANCH

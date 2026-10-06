@@ -1,0 +1,13 @@
+- job-template:
+    name: 'api'
+    description: 'API тесты'
+    project-type: pipeline
+    parameters:
+      - string:
+          name: BRANCH
+          default: master
+          description: Branch
+    pipeline-scm:
+      scm:
+        - api
+      script-path: Jenkinsfile
