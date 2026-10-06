@@ -4,3 +4,4 @@
     job-description: 'autotests for OTUS'
     jobs:
       - 'jobs_uploader'
+      - 'api'
