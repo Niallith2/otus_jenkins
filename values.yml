@@ -1,5 +1,5 @@
 controller:
-  serviceType: LoadBalancer
+  serviceType: NodePort
   servicePort: 8080
   jenkinsUrl: "http://localhost:8080"
   additionalPlugins:
@@ -14,7 +14,7 @@ controller:
     - timestamper:1.30
   containerEnv:
     - name: CASC_MERGE_STRATEGY
-      valuse: "override"
+      value: "override"
   JCasC:
     enable: true
     defaultConfig: true
@@ -37,7 +37,7 @@ controller:
                   id: "github"
                   privateKeySource:
                     directEntry:
-                      privateKey: ""
+                      privateKey: "{AQAAABAAAAAQrdB/SayrOiNYKFyZxDN7XNXepLB95KQmmAzVF4KoOMI=}"
                   scope: GLOBAL
                   username: "azamat-murzin"
                   usernameSecret: true
@@ -55,7 +55,7 @@ controller:
               containerCapStr: "10"
               jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
               jenkinsUrl: "http://jenkins.jenkins.svc.cluster.local:8080"
-              name: "otus"
+              name: "kubernetes"
               namespace: "jenkins"
               podLabels:
               - key: "jenkins/jenkins-jenkins-agent"
@@ -84,49 +84,6 @@ controller:
                 serviceAccount: "default"
                 slaveConnectTimeout: 100
                 slaveConnectTimeoutStr: "100"
-                yamlMergeStrategy: "override"
-              - containers:
-                - args: "^${computer.jnlpmac} ^${computer.name}"
-                  envVars:
-                  - envVar:
-                      key: "JENKINS_URL"
-                      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
-                  - envVar:
-                      key: "ALLURE_OPTS"
-                      value: "--config-file=allurerc.yml"
-                  image: "localhost:5000/inbound-agent-allure3:3.15.0"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "jnlp"
-                  workingDir: "/home/jenkins/agent"
-                id: "ada2141d-dc10-4283-be61-b05cb90d5c2d"
-                label: "jenkins-jenkins-agent"
-                name: "allure3"
-                namespace: "jenkins"
-                slaveConnectTimeout: 100
-                slaveConnectTimeoutStr: "100"
-                yamlMergeStrategy: "override"
-              - containers:
-                - args: "9999999"
-                  command: "sleep"
-                  image: "gcr.io/kaniko-project/executor:v1.24.0-debug"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "kaniko"
-                  workingDir: "/home/jenkins/agent"
-                id: "c7199c6e-bebd-46d5-8190-2c7e35a22f32"
-                inheritFrom: "default"
-                label: "jenkins-jenkins-agent"
-                name: "kaniko"
-                namespace: "jenkins"
                 yamlMergeStrategy: "override"
           crumbIssuer: "standard"
           disableRememberMe: false
@@ -164,7 +121,6 @@ controller:
               users:
               - id: "admin"
                 name: "Jenkins Admin"
-                password: "admin"
                 properties:
                 - "apiToken"
                 - "consoleUrlProvider"

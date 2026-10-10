@@ -1,5 +1,5 @@
 controller:
-  serviceType: LoadBalancer
+  serviceType: NodePort
   servicePort: 8080
   jenkinsUrl: "http://localhost:8080"
   additionalPlugins:
