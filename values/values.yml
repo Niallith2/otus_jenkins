@@ -2,6 +2,13 @@ controller:
   serviceType: NodePort
   servicePort: 8080
   jenkinsUrl: "http://localhost:8080"
+  installPlugins: false
+  startupProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 60
+    successThreshold: 1
   additionalPlugins:
     - pipeline-stage-view:2.41
     - pipeline-utility-steps:3.810.va_7672d206740
@@ -30,19 +37,8 @@ controller:
             }
           providerImpl: {
             }
-          system:
-            domainCredentials:
-            - credentials:
-              - basicSSHUserPrivateKey:
-                  id: "github"
-                  privateKeySource:
-                    directEntry:
-                      privateKey: "{AQAAABAAAAAQrdB/SayrOiNYKFyZxDN7XNXepLB95KQmmAzVF4KoOMI=}"
-                  scope: GLOBAL
-                  username: "azamat-murzin"
-                  usernameSecret: true
-              domain: {
-                }
+          system: {
+            }
           user: {
             }
         jenkins:
@@ -85,9 +81,90 @@ controller:
                 slaveConnectTimeout: 100
                 slaveConnectTimeoutStr: "100"
                 yamlMergeStrategy: "override"
+          - kubernetes:
+              containerCap: 10
+              containerCapStr: "10"
+              jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
+              jenkinsUrl: "http://jenkins.jenkins.svc.cluster.local:8080"
+              name: "otus"
+              namespace: "jenkins"
+              podLabels:
+              - key: "jenkins/jenkins-jenkins-agent"
+                value: "true"
+              serverUrl: "https://kubernetes.default"
+              templates:
+              - containers:
+                - args: "^${computer.jnlpmac} ^${computer.name}"
+                  envVars:
+                  - envVar:
+                      key: "JENKINS_URL"
+                      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+                  image: "jenkins/inbound-agent:3385.vf1123fb_515da_-1"
+                  name: "jnlp"
+                  resourceLimitCpu: "512m"
+                  resourceLimitMemory: "512Mi"
+                  resourceRequestCpu: "512m"
+                  resourceRequestMemory: "512Mi"
+                  workingDir: "/home/jenkins/agent"
+                id: "95d21559f6381190c43a9aa24e40c4b09348e5a043c03a5d3e59615d2435de79"
+                label: "jenkins-jenkins-agent"
+                name: "default"
+                namespace: "jenkins"
+                nodeUsageMode: NORMAL
+                podRetention: "never"
+                serviceAccount: "default"
+                slaveConnectTimeout: 100
+                slaveConnectTimeoutStr: "100"
+                yamlMergeStrategy: "override"
+              - containers:
+                - args: "^${computer.jnlpmac} ^${computer.name}"
+                  envVars:
+                  - envVar:
+                      key: "JENKINS_URL"
+                      value: "http://jenkins.jenkins.svc.cluster.local:8080/"
+                  - envVar:
+                      key: "ALLURE_OPTS"
+                      value: "--config-file=allurerc.yml"
+                  image: "localhost:5000/inbound-agent-allure3:3.15.0"
+                  livenessProbe:
+                    failureThreshold: 0
+                    initialDelaySeconds: 0
+                    periodSeconds: 0
+                    successThreshold: 0
+                    timeoutSeconds: 0
+                  name: "jnlp"
+                  workingDir: "/home/jenkins/agent"
+                id: "e191623b-7b5d-4458-ad0f-1b84c1af99da"
+                label: "jenkins-jenkins-agent"
+                name: "allure"
+                namespace: "jenkins"
+                podRetention: "never"
+                slaveConnectTimeout: 100
+                slaveConnectTimeoutStr: "100"
+                yamlMergeStrategy: "override"
+              - containers:
+                - args: "9999999"
+                  command: "sleep"
+                  image: "gcr.io/kaniko-project/executor:v1.24.0-debug"
+                  livenessProbe:
+                    failureThreshold: 0
+                    initialDelaySeconds: 0
+                    periodSeconds: 0
+                    successThreshold: 0
+                    timeoutSeconds: 0
+                  name: "kaniko"
+                  workingDir: "/home/jenkins/agent"
+                id: "041dbccc-7243-401c-8777-4f67bef8d7f6"
+                inheritFrom: "default"
+                label: "jenkins-jenkins-agent"
+                name: "kaniko"
+                namespace: "jenkins"
+                yamlMergeStrategy: "override"
           crumbIssuer: "standard"
           disableRememberMe: false
           labelAtoms:
+          - name: "api-36-d23n2-3mc0h-w627x"
+          - name: "api_36-d23n2"
           - name: "built-in"
           - name: "jenkins-jenkins-agent"
           log: {
@@ -121,8 +198,8 @@ controller:
               users:
               - id: "admin"
                 name: "Jenkins Admin"
+                password: "admin"
                 properties:
-                - "apiToken"
                 - "consoleUrlProvider"
                 - "mailer"
                 - preferredProvider:
@@ -134,12 +211,39 @@ controller:
                     viewsTabBar: "standard"
                 - timezone:
                     timeZoneName: "Europe/Moscow"
+                - "apiToken"
           slaveAgentPort: 50000
           updateCenter:
             sites:
             - id: "default"
               url: "https://updates.jenkins.io/update-center.json"
           views:
+          - list:
+              columns:
+              - "status"
+              - "buildButton"
+              - "jobName"
+              description: "DevOps<!-- Managed by Jenkins Job Builder -->"
+              filterExecutors: true
+              filterQueue: true
+              jobNames:
+              - "jobs_uploader"
+              name: "DevOps"
+          - list:
+              columns:
+              - "status"
+              - "weather"
+              - "jobName"
+              - "lastSuccess"
+              - "lastFailure"
+              - "lastDuration"
+              - "buildButton"
+              description: "QA<!-- Managed by Jenkins Job Builder -->"
+              filterExecutors: true
+              filterQueue: true
+              jobNames:
+              - "api"
+              name: "QA"
           - all:
               name: "all"
           viewsTabBar: "standard"
