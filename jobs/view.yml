@@ -20,6 +20,7 @@
     filter-queue: true
     job-name:
       - 'api'
+      - 'ui'
     columns:
       - status
       - weather
