@@ -19,3 +19,13 @@
         branches:
         - FETCH_HEAD
         refspec: $BRANCH
+
+- scm:
+      name: ui
+      scm:
+          - git:
+                url: https://github.com/Niallith2/otus_homework_2.git
+                credentials-id: github
+                branches:
+                    - FETCH_HEAD
+                refspec: $BRANCH

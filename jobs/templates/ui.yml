@@ -1,0 +1,31 @@
+- job-template:
+    name: 'ui'
+    description: 'UI тесты'
+    project-type: pipeline
+    parameters:
+      - string:
+          name: BRANCH
+          default: master
+          description: Branch
+      - string:
+          name: MOON_IP
+          default: moon.aerokube.local
+          description: Moon address (without http:// or https://)
+      - string:
+          name: MOON_PORT
+          default: 80
+          description: Moon port
+      - choice:
+          name: BROWSER
+          choices:
+            - chrome
+            - firefox
+          description: Browser
+      - bool:
+          name: FORCE
+          default: false
+          description: Принудительно пересобрать образ, игнорируя кэш
+    pipeline-scm:
+      scm:
+        - ui
+      script-path: Jenkinsfile
